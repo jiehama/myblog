@@ -1,0 +1,5 @@
+{# 关闭自动转译，去除P标签 #}
+{% autoescape off %}
+    <p>{{ comment_text }}</p>
+    <a href="{{ url }}">点击查看</a>
+{% endautoescape %}

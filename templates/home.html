@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    5TIGER|首页
+{% endblock %}
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+{% block nav_home_active %}active{% endblock %}
+{% block content %}
+
+    <h3 class="home-content">欢迎光临5TIGER</h3>
+     <!-- 图表容器 DOM -->
+    <div id="container" ></div>
+    <!-- 今天24小时内热门博客 -->
+    <div class="container">
+        <div class="row">
+              <div class="col-xs-3 col-xs-offset-2">
+                  <div class="hot-data">
+                    <h3>今天热门点击</h3>
+                    <ul>
+                    {% for hot_data in today_hot_data %}
+                        <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>[{{ hot_data.read_num }}]</li>
+                    {% empty %}
+                        <li>今天暂时没有热门博客</li>
+                    {% endfor %}
+                    </ul>
+                    </div>
+              </div>
+              <div class="col-xs-3 ">
+                  <div class="hot-data">
+                    <h3>昨天热门点击</h3>
+                    <ul>
+                        {% for hot_data in yesterday_hot_data %}
+                            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>[{{ hot_data.read_num }}]</li>
+                        {% empty %}
+                            <li>昨天没有热门博客</li>
+                        {% endfor %}
+                        </ul>
+                </div>
+              </div>
+              <div class="col-xs-3 ">
+                  <div class="hot-data">
+                    <h3>7天热门点击</h3>
+                    <ul>
+                        {% for hot_blog in 7days_hot_blogs %}
+                            <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>[{{ hot_blog.read_num_sum }}]</li>
+                        {% empty %}
+                            <li>7天没有热门博客</li>
+                        {% endfor %}
+                        </ul>
+                </div>
+              </div>
+    </div>
+
+
+    <!-- 引入 highcharts.js -->
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        // 图表配置
+        var options = {
+            chart: {
+                type: 'line'                          //指定图表的类型，默认是折线图（line）
+            },
+            title: {
+                text: '博文浏览趋势图'                 // 标题
+            },
+            xAxis: {
+                categories: {{ dates|safe }}, // x 轴分类
+                tickmarkPlacement:'on',
+            },
+            yAxis: {
+                title: {text: null},             // y 轴标题
+                labels: {enabled:false},
+                gridLineDashStyle : 'Dot',
+            },
+            series: [{                              // 数据列
+                name: '阅读量',                        // 数据列名
+                data: {{ read_nums }}                // 数据
+            }],
+            legend:{enabled:false},
+            credits:{enabled:false},
+            plotOptions: {
+                line: {
+                    dataLabels: {enabled: true}
+                }
+            },
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
+{% endblock %}

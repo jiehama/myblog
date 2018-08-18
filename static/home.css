@@ -1,0 +1,25 @@
+h3.home-content {
+    font-size: 222%;
+    text-align: center;
+    margin-top: 4em;
+    margin-bottom: 2em;
+}
+div#container {
+    margin: 0 auto;
+    height: 25em;
+    min-width: 30em;
+    max-width: 40em;
+}
+div.hot-data-box{
+    text-align: center;
+    width: 1000px;
+}
+div.hot-data{
+
+    text-align: center;
+    margin-top: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+}
+.clearfix:after{clear: both;content:'';display:block;height:0;visibility:hidden;}

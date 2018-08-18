@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+    5TIGER|{{ page_title }}
+{% endblock %}
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+
+{% endblock %}
+{% block nav_home_active %}active{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-4">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                          <h3 class="panel-title">{{ form_title }}</h3>
+                      </div>
+                      <div class="panel-body">
+                          <form  action="" method="post">
+                              {% csrf_token %}
+                             {#   可以直接写成这样，简单罗列各个字段{{ login_form }} #}
+                              {% for field in form %}
+                                  {% if not field.is_hidden %}
+                                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                  {% endif %}
+                                  {{ field }}
+                                  <p class="text-danger">{{ field.errors.as_text }}</p>
+                              {% endfor %}
+                              <span id="tip" class="text-danger pull-left">{{ form.non_field_errors }}</span>
+                              <div class="clearfix"></div>
+                              {% block other_label %}{% endblock %}
+                              <button class="btn btn-default pull-right"  onclick="window.location.href='{{ return_back_url }}'">返回</button>
+                              <button type="submit" class="btn btn-primary pull-right" style="margin-right: 1em;">{{ submit_text }}</button>
+                          </form>
+                      </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
